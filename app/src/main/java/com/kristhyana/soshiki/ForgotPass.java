@@ -125,25 +125,25 @@ public class ForgotPass extends DialogFragment  implements View.OnClickListener 
     }
 
 
-
     private String tempPassword(String recieverEmail) {
 
         char[] chars = "abcdefghijklmnopqrstuvwxyz1234567890".toCharArray();
         StringBuilder sb = new StringBuilder();
         Random random = new Random();
         for (int i = 0; i < 9; i++) {
-            char c = chars[random.nextInt(chars.length)];
+            char c = chars[random.nextInt(chars.length)];//new Character((char) (random.nextInt(chars.length) + 65));
             sb.append(c);
         }
         String output = sb.toString();
         Log.d("pass", output);
-        setPassword(output,recieverEmail);
+        setPassword(output, recieverEmail);
         return output;
 
     }
 
     private void setPassword(final String pass, String email) {
         ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.fromLocalDatastore();
         query.whereEqualTo("email", email);
         query.findInBackground(new FindCallback<ParseUser>() {
 
@@ -151,14 +151,13 @@ public class ForgotPass extends DialogFragment  implements View.OnClickListener 
             public void done(List<ParseUser> usersObject, ParseException e) {
                 if (e == null) {
                     Log.d("Email", "success");
-                        usersObject.get(0).put("password", pass);
-                        usersObject.get(0).put("tempPassword", pass);
-                        usersObject.get(0).saveEventually();
+                    usersObject.get(0).put("password", pass);
+                    usersObject.get(0).put("tempPassword", pass);
+                    usersObject.get(0).saveInBackground();
 
                 } else {
-
-                Log.d("Email", "Error: " + e.getMessage());
-            }
+                    Log.d("Email", "Error: " + e.getMessage());
+                }
             }
         });
     }

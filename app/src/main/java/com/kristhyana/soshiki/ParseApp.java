@@ -1,8 +1,14 @@
 package com.kristhyana.soshiki;
 
 import android.app.Application;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.widget.Toast;
+
 import com.parse.Parse;
 import com.parse.ParseACL;
+import com.parse.ParseAnonymousUtils;
 import com.parse.ParseUser;
 
 /**
@@ -26,5 +32,6 @@ public class ParseApp extends Application {
         ParseACL defaultACL = new ParseACL();
         ParseACL.setDefaultACL(defaultACL, true);
     }
+    
 
 }
