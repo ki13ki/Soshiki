@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.kristhyana.soshiki" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:name=".ParseApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_soshiki_icon"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".Login"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Home"
+            android:label="@string/title_activity_home" >
+        </activity>
+        <activity
+            android:name=".ResetPass"
+            android:label="@string/title_activity_reset_pass" >
+        </activity>
+        <activity
+            android:name=".ForgotPass"
+            android:label="@string/title_activity_forgot_pass"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+        </activity>
+    </application>
+
+</manifest>

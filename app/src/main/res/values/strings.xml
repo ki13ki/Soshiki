@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Soshiki</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="login_message">Invalid login credentials. </string>
+    <string name="login_lock">Your account has been locked!</string>
+    <string name="notActive">Please contact your admin.</string>
+
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="loginBtn">Login</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="title_activity_home">Home</string>
+    <string name="title_activity_reset_pass">ResetPass</string>
+    <string name="title_activity_forgot_pass">ForgotPass</string>
+
+    <string name="forgot_message">Please enter your email and a reset instruction will be send to you.</string>
+    <string name="send">Send</string>
+    <string name="email">Email</string>
+    <string name="nullEmail">Email can't be blank.</string>
+
+</resources>
