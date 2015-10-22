@@ -13,14 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -56,36 +52,42 @@ public class Login extends AppCompatActivity  implements ForgotPass.Communicator
         usernameTxt = user.getText().toString();
         passwordTxt = password.getText().toString();
 
+        if (usernameTxt != null || passwordTxt != null) {
 
-        ParseUser.logInInBackground(usernameTxt, passwordTxt, new LogInCallback() {
-            public void done(ParseUser userInfo, ParseException e) {
-                if (e == null) {
-                    Intent intent;
-                    if (userInfo.getBoolean("active") == true) {
-                        if (userInfo.getString("tempPassword") != null) {
-                            intent = new Intent(Login.this, ResetPass.class);
-                            startActivity(intent);
-                            finish();
+
+            ParseUser.logInInBackground(usernameTxt, passwordTxt, new LogInCallback() {
+                public void done(ParseUser userInfo, ParseException e) {
+                    if (e == null) {
+                        Intent intent;
+                        if (userInfo.getBoolean("active") == true) {
+                            if (userInfo.getString("tempPassword") != null) {
+                                intent = new Intent(Login.this, ResetPass.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                intent = new Intent(Login.this, Home.class);
+                                startActivity(intent);
+                                finish();
+                            }
                         } else {
-                            intent = new Intent(Login.this, Home.class);
-                            startActivity(intent);
-                            finish();
+                            loginMess.setVisibility(View.VISIBLE);
+                            loginMess.setText(R.string.notActive);
                         }
                     } else {
+                        count--;
                         loginMess.setVisibility(View.VISIBLE);
-                        loginMess.setText(R.string.notActive);
+                        loginMess.setText(R.string.login_message);
                     }
-                } else {
-                    count--;
-                    loginMess.setVisibility(View.VISIBLE);
-                    loginMess.setText(R.string.login_message);
                 }
+            });
+            if (count == 0) {
+                login.setEnabled(false);
+                loginMess.setVisibility(View.VISIBLE);
+                loginMess.setText(R.string.login_lock);
             }
-        });
-        if (count == 0) {
-            login.setEnabled(false);
+        } else{
             loginMess.setVisibility(View.VISIBLE);
-            loginMess.setText(R.string.login_lock);
+            loginMess.setText(R.string.nullLogin);
         }
     }
 

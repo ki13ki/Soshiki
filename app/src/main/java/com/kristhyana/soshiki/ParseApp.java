@@ -13,6 +13,7 @@ public class ParseApp extends Application {
     public void onCreate() {
         super.onCreate();
 
+
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
 
@@ -25,4 +26,5 @@ public class ParseApp extends Application {
         ParseACL defaultACL = new ParseACL();
         ParseACL.setDefaultACL(defaultACL, true);
     }
+
 }
