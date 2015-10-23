@@ -18,6 +18,7 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.RequestPasswordResetCallback;
 
 import java.util.List;
 import java.util.Random;
@@ -72,7 +73,16 @@ public class ForgotPass extends DialogFragment  implements View.OnClickListener 
 
 
     public void sendEmail(String recieverEmail) {
-        String temp = tempPassword(recieverEmail);
+        ParseUser.requestPasswordResetInBackground(recieverEmail, new RequestPasswordResetCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.d("resetEmail", "successfully Send.");
+                } else {
+                   Log.d("Error", "Reset password email fail to be sent" + e.getMessage());
+                }
+            }
+        });
+        /*String temp = tempPassword(recieverEmail);
         String senderEmail = getString(R.string.senderEmail);
         String tokenPass = getString(R.string.token);
         if (senderEmail !=null || tokenPass != null) {
@@ -89,11 +99,11 @@ public class ForgotPass extends DialogFragment  implements View.OnClickListener 
         }else{
             Log.d("Error", "Missing info ");
         }
-
+*/
     }
 
 
-    private String tempPassword(String recieverEmail) {
+/*    private String tempPassword(String recieverEmail) {
         char[] chars = "abcdefghijklmnopqrstuvwxyz1234567890".toCharArray();
         StringBuilder sb = new StringBuilder();
         Random random = new Random();
@@ -126,5 +136,5 @@ public class ForgotPass extends DialogFragment  implements View.OnClickListener 
                 }
             }
         });
-    }
+    }*/
 }

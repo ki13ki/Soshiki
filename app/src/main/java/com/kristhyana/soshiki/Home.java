@@ -11,7 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -26,8 +28,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class Home extends AppCompatActivity {
-@Bind(R.id.userName)
-    TextView user;
+    //@Bind(R.id.userName)
+//    TextView user;
     @Bind(R.id.compWeb)
     WebView companyWeb;
     @Bind(R.id.webMess)
@@ -39,31 +41,34 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
 
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        String id = currentUser.getUsername();
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("EmployeeInfo");
-        query.whereEqualTo("EmployeeID", id);
-        query.fromLocalDatastore();
-        query.findInBackground(new FindCallback<ParseObject>() {
 
-            @Override
-            public void done(List<ParseObject> usersObject, ParseException e) {
-                if (e == null) {
-                    String name = usersObject.get(0).getString("employeeFirstName");
-                    user.setText(name);
-
-                } else {
-                    Log.d("Email", "Error: " + e.getMessage());
-                }
-            }
-        });
+//        ParseUser currentUser = ParseUser.getCurrentUser();
+//        String id = currentUser.getUsername();
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery("EmployeeInfo");
+//        query.whereEqualTo("EmployeeID", id);
+//        query.fromLocalDatastore();
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//
+//            @Override
+//            public void done(List<ParseObject> usersObject, ParseException e) {
+//                try {
+//                    String name = usersObject.get(0).getString("employeeFirstName");
+//                    user.setText(name);
+//
+//                } catch (Exception e2) {
+//                    e2.printStackTrace();
+//                    Log.d("EmployeeName", "EmpoyeeName is not found");
+//                    user.setVisibility(View.GONE);
+//                }
+//
+//            }
+//        });
         Boolean isConnected = isNetworkAvailable();
-        if(isConnected.equals(true)) {
-
-            WebSettings webSettings = companyWeb.getSettings();
-            webSettings.setJavaScriptEnabled(true);
+        if (isConnected.equals(true)) {
+            companyWeb.getSettings().setJavaScriptEnabled(true);
+            companyWeb.setWebViewClient(new WebViewClient());
             companyWeb.loadUrl("http://www.google.com");
-        }else{
+        } else {
             companyWeb.setVisibility(View.INVISIBLE);
             webMess.setVisibility(View.VISIBLE);
 
@@ -76,5 +81,6 @@ public class Home extends AppCompatActivity {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
 
 }

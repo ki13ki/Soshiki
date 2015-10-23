@@ -18,6 +18,8 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 import butterknife.Bind;
@@ -52,16 +54,21 @@ public class ResetPass extends AppCompatActivity {
             resetMessage.setVisibility(View.VISIBLE);
             resetMessage.setText("All fields are required!");
         } else {
-            if (!pass1.equals(pass2)) {
+            if (pass1.length() < 8 || pass2.length() < 8) {
                 resetMessage.setVisibility(View.VISIBLE);
-                resetMessage.setText("New Password fields do not match");
-                newPass.getText().clear();
-                newPass2.getText().clear();
-            } else {
-                changePassword(tempPass.getText().toString(), newPass.getText().toString());
-                Intent intent = new Intent(ResetPass.this, Home.class);
-                startActivity(intent);
-                finish();
+                resetMessage.setText("Password length does not mean the criteria.");
+            }else{
+                if (!pass1.equals(pass2)) {
+                    resetMessage.setVisibility(View.VISIBLE);
+                    resetMessage.setText("New Password fields do not match");
+                    newPass.getText().clear();
+                    newPass2.getText().clear();
+                } else {
+                    changePassword(tempPass.getText().toString(), newPass.getText().toString());
+                    Intent intent = new Intent(ResetPass.this, Home.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         }
 
@@ -71,7 +78,7 @@ public class ResetPass extends AppCompatActivity {
     private void changePassword(final String currentPass, final String newPassword)  {
         ParseUser currentUser = ParseUser.getCurrentUser();
         currentUser.setPassword(newPassword);
-        currentUser.put("tempPassword", "");
+        currentUser.put("tempPassword", JSONObject.NULL);
         currentUser.saveInBackground();
 
 //        ParseQuery<ParseUser> query = ParseUser.getQuery();
