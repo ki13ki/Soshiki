@@ -32,6 +32,6 @@ public class ParseApp extends Application {
         ParseACL defaultACL = new ParseACL();
         ParseACL.setDefaultACL(defaultACL, true);
     }
-    
+
 
 }

@@ -27,7 +27,6 @@ import com.parse.ParseUser;
 
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -40,8 +39,8 @@ public class ForgotPass extends DialogFragment  implements View.OnClickListener 
     @Bind(R.id.nullEmailMess)
     TextView nullEmess;
     Communicator communicator;
-    String userInfo;
-    String userPass;
+    private String senderEmail;
+    private String tokenPass;
 
     @Override
     public void onAttach(Activity activity) {
@@ -65,10 +64,9 @@ public class ForgotPass extends DialogFragment  implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         String recipient = mEmail.getText().toString();
-        if (mEmail != null) {
+        if (recipient != null) {
             sendEmail(recipient);
             dismiss();
-
         } else {
             nullEmess.setVisibility(View.VISIBLE);
             nullEmess.setText(R.string.nullEmail);
@@ -83,45 +81,51 @@ public class ForgotPass extends DialogFragment  implements View.OnClickListener 
 
     public void sendEmail(String recieverEmail) {
         String temp = tempPassword(recieverEmail);
-        String senderEmail = getUser();
-        String pass = getPass();
-        try {
-            GMailSender sender = new GMailSender(senderEmail, getPass());
-            sender.sendMail("Reset Password",
-                    "You have requested to reset your password. " +
-                            "The temporay password is " + temp +"." +" When you login into your account" +
-                            " you will be requested to reset your password.", senderEmail, recieverEmail);
+        getUser();
+        getPass();
+        if (senderEmail !=null || tokenPass != null) {
+            try {
+                GMailSender sender = new GMailSender(senderEmail, tokenPass);
+                sender.sendMail("Reset Password",
+                        "You have requested to reset your password. " +
+                                "The temporay password is " + temp + "." + " When you login into your account" +
+                                " you will be requested to reset your password.", senderEmail, recieverEmail);
 
-        } catch (Exception e) {
-            Log.e("SendMail", e.getMessage(), e);
+            } catch (Exception e) {
+                Log.e("SendMail", e.getMessage(), e);
+            }
+        }else{
+            Log.d("Error", "Missing info ");
         }
 
     }
 
-    public String getUser(){
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
-        query.getInBackground("zVdQ379iMX", new GetCallback<ParseObject>() {
-            public void done(ParseObject object, ParseException e) {
-                if (e == null) {
-                    userInfo = object.getString("email");
-                }
 
+
+    public void getUser(){
+        ParseQuery<ParseUser> query = ParseQuery.getQuery("User");
+        query.getInBackground("zVdQ379iMX", new GetCallback<ParseUser>() {
+            public void done(ParseUser object, ParseException e) {
+                if (object !=null) {
+                    senderEmail = object.getString("email");
+                } else {
+                    // something went wrong
+                }
             }
         });
-        return userInfo;
     }
 
-    public String getPass(){
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
-        query.getInBackground("zVdQ379iMX", new GetCallback<ParseObject>() {
-            public void done(ParseObject object, ParseException e) {
-                if (e == null) {
-                    userPass = object.getString("password");
+    public void getPass(){
+        ParseQuery<ParseUser> query = ParseQuery.getQuery("User");
+        query.fromLocalDatastore();
+        query.getInBackground("zVdQ379iMX", new GetCallback<ParseUser>() {
+            public void done(ParseUser usersObject, ParseException e) {
+                if (usersObject != null) {
+                    tokenPass = usersObject.getString("password");
                 }
 
             }
         });
-        return userPass;
     }
 
 
@@ -150,7 +154,6 @@ public class ForgotPass extends DialogFragment  implements View.OnClickListener 
             @Override
             public void done(List<ParseUser> usersObject, ParseException e) {
                 if (e == null) {
-                    Log.d("Email", "success");
                     usersObject.get(0).put("password", pass);
                     usersObject.get(0).put("tempPassword", pass);
                     usersObject.get(0).saveInBackground();

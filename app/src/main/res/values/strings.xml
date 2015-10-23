@@ -21,5 +21,10 @@
     <string name="email">Email</string>
     <string name="nullEmail">Email cannot be empty.</string>
     <string name="nullLogin">Username and/or Password cannot be empty.</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">Enter a new password</string>
+    <string name="reEnter_password">Re-enter New Password</string>
+    <string name="enter">Enter</string>
+    <string name="resetInstr">Please create a new password that is at least 8 character long.</string>
 
 </resources>
