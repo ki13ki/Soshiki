@@ -2,26 +2,20 @@ package com.kristhyana.soshiki;
 
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -39,8 +33,6 @@ public class ForgotPass extends DialogFragment  implements View.OnClickListener 
     @Bind(R.id.nullEmailMess)
     TextView nullEmess;
     Communicator communicator;
-    private String senderEmail;
-    private String tokenPass;
 
     @Override
     public void onAttach(Activity activity) {
@@ -81,8 +73,8 @@ public class ForgotPass extends DialogFragment  implements View.OnClickListener 
 
     public void sendEmail(String recieverEmail) {
         String temp = tempPassword(recieverEmail);
-        getUser();
-        getPass();
+        String senderEmail = getString(R.string.senderEmail);
+        String tokenPass = getString(R.string.token);
         if (senderEmail !=null || tokenPass != null) {
             try {
                 GMailSender sender = new GMailSender(senderEmail, tokenPass);
@@ -101,36 +93,7 @@ public class ForgotPass extends DialogFragment  implements View.OnClickListener 
     }
 
 
-
-    public void getUser(){
-        ParseQuery<ParseUser> query = ParseQuery.getQuery("User");
-        query.getInBackground("zVdQ379iMX", new GetCallback<ParseUser>() {
-            public void done(ParseUser object, ParseException e) {
-                if (object !=null) {
-                    senderEmail = object.getString("email");
-                } else {
-                    // something went wrong
-                }
-            }
-        });
-    }
-
-    public void getPass(){
-        ParseQuery<ParseUser> query = ParseQuery.getQuery("User");
-        query.fromLocalDatastore();
-        query.getInBackground("zVdQ379iMX", new GetCallback<ParseUser>() {
-            public void done(ParseUser usersObject, ParseException e) {
-                if (usersObject != null) {
-                    tokenPass = usersObject.getString("password");
-                }
-
-            }
-        });
-    }
-
-
     private String tempPassword(String recieverEmail) {
-
         char[] chars = "abcdefghijklmnopqrstuvwxyz1234567890".toCharArray();
         StringBuilder sb = new StringBuilder();
         Random random = new Random();

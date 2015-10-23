@@ -26,5 +26,9 @@
     <string name="reEnter_password">Re-enter New Password</string>
     <string name="enter">Enter</string>
     <string name="resetInstr">Please create a new password that is at least 8 character long.</string>
+    <string name="senderEmail">leekristhyana@gmail.com</string>
+    <string name="token">Ki13ki89@</string>
+    <string name="welcome">Welcome,</string>
+    <string name="notConnected">Not connected to the Internet!!</string>
 
 </resources>

@@ -14,7 +14,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".Login"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -22,11 +23,13 @@
         </activity>
         <activity
             android:name=".Home"
-            android:label="@string/title_activity_home" >
+            android:label="@string/title_activity_home"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
         </activity>
         <activity
             android:name=".ResetPass"
-            android:label="@string/title_activity_reset_pass" >
+            android:label="@string/title_activity_reset_pass"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
         </activity>
     </application>
 
